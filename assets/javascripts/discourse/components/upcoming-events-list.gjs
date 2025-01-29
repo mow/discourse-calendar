@@ -14,6 +14,7 @@ import { isNotFullDayEvent } from "../lib/guess-best-date-format";
 export const DEFAULT_TIME_FORMAT = "LT";
 const DEFAULT_UPCOMING_DAYS = 180;
 const DEFAULT_COUNT = 8;
+const DEFAULT_ALL_EVENTS = 0;
 
 function addToResult(date, item, result) {
   const day = date.date();
@@ -36,6 +37,7 @@ export default class UpcomingEventsList extends Component {
   timeFormat = this.args.params?.timeFormat ?? DEFAULT_TIME_FORMAT;
   count = this.args.params?.count ?? DEFAULT_COUNT;
   upcomingDays = this.args.params?.upcomingDays ?? DEFAULT_UPCOMING_DAYS;
+  allEvents = this.args.params?.allEvents ?? DEFAULT_ALL_EVENTS;
 
   emptyMessage = I18n.t("discourse_post_event.upcoming_events_list.empty");
   allDayLabel = I18n.t("discourse_post_event.upcoming_events_list.all_day");
@@ -92,7 +94,7 @@ export default class UpcomingEventsList extends Component {
       before: moment().add(this.upcomingDays, "days").toISOString(),
     };
 
-    if (this.categoryId) {
+    if (!data.allEvents && this.categoryId) {
       data.category_id = this.categoryId;
     }
 
